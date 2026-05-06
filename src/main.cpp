@@ -57,6 +57,7 @@ void deregisterServos() {
     for (auto &&servo : servos) {
         servo.detach();
     }
+    servoCount = 0;
 }
 
 void deregisterMotors() {
@@ -64,6 +65,7 @@ void deregisterMotors() {
         motor[0] = 0;
         motor[1] = 0;
     }
+    motorCount = 0;
 }
 
 
@@ -197,7 +199,12 @@ void setup() {
 }
 
 void loop() {
-    if (Serial.available()){
-        parseJson(Serial.readString().c_str());
+    if (Serial.available()) {
+        String line = Serial.readStringUntil('\n');
+        line.trim();
+
+        if (line.length() > 0) {
+            parseJson(line.c_str());
+        }
     }
 }
